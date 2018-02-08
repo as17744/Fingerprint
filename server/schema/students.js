@@ -18,3 +18,6 @@ exports.addStudent = function(id, clas) {
         clas
     })
 };
+exports.getStudents = function() {
+    return student.findAll();
+};

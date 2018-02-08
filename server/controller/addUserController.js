@@ -13,7 +13,7 @@ module.exports = async(ctx, next) => {
         if (+type === 1) {
             await student.addStudent(id, clas);
         } else if (+type === 2) {
-            await teacher.addTeacher(id, classes);
+            await teacher.addTeacher(id, name, classes);
         }
         ctx.body = {
             success: true,

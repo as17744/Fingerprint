@@ -59,7 +59,7 @@
                 </el-form>
                 <div class="btt-part">
                     <el-button type="primary" @click="register">注册</el-button>
-                    <el-button type="success">登陆</el-button>
+                    <el-button type="success" @click="login">登陆</el-button>
                 </div>
             </div>
         </div>
@@ -143,6 +143,20 @@
                     });
                     this.classes = [].concat(res.data);
                 });
+            },
+            login() {
+                zstuAjax('/login', {
+                    id: this.form.account,
+                    pass: this.form.password
+                }, 'GET').then((res) => {
+                    if (res.success) {
+                        if (+res.type === 3) {
+                            this.$router.push('/manager');
+                        }
+                    } else {
+                        this.$message.error(res.message);
+                    }
+                })
             }
         }
     }

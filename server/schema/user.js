@@ -20,6 +20,14 @@ const user = DB.define('users', {
 });
 user.sync({force: false, logging: false});
 
+exports.findUser = function(id) {
+    return user.findOne({
+        where: {
+            id
+        }
+    });
+};
+
 exports.addUser = function(name, id, pass, type) {
     return user.create({
         name,

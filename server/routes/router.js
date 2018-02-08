@@ -1,8 +1,22 @@
 const Router = require('koa-router');
 const getClasses = require('../controller/getClassController');
 const addUser = require('../controller/addUserController');
+const login = require('../controller/loginController');
+const check = require('../controller/checkLoginController');
+const readfile = require('../controller/readfileController');
+const getId = require('../controller/getStudentController');
+const modify = require('../controller/modifyPassController');
+const unvalidate = require('../controller/getUnvalidateController');
+const validate = require('../controller/validateController');
 
 const router = new Router();
 router.get('/getClasses', getClasses);
 router.get('/add', addUser);
+router.get('/login', login);
+router.get('/check', check);
+router.get('/readfile', readfile);
+router.get('/getId', getId);
+router.get('/modify', modify);
+router.get('/unvalidate', unvalidate);
+router.get('/validate', validate);
 module.exports = router;
