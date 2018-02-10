@@ -36,7 +36,13 @@ exports.addUser = function(name, id, pass, type) {
         type
     });
 };
-
+exports.deleteUser = function(id) {
+    return user.destroy({
+        where: {
+            id
+        }
+    })
+};
 exports.modifyPass = function(id, pass) {
     return user.update({
         pass

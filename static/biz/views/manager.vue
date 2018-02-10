@@ -15,36 +15,37 @@
                     <span slot="title">密码修改</span>
                 </el-menu-item>
             </el-menu>
-    </el-aside>
-    <el-main class="main">
-        <div class="upload-part" v-if="key === 1">
-            <div class="btt" @click="upload"><i class="el-icon-upload2"></i>今日考勤信息上传</div>
-            <input type="file" accept=".txt, .dat" class="input-btt" ref="uploadBtt" @change="uploadFile">
-        </div>
-        <div v-if="key === 2">
-            <el-table :data="unValidate">
-                <el-table-column prop="name" label="姓名"></el-table-column>
-                <el-table-column prop="id" label="工号"></el-table-column>
-                <el-table-column prop="duty" label="负责班级"></el-table-column>
-                <el-table-column label="操作">
-                    <template slot-scope="scope">
-                        <el-button type="success" @click="validate(scope.row.id)">确定</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </div>
-        <div v-if="key === 3">
-            <el-form>
-                <el-form-item label="新密码">
-                    <el-input class="e-input" v-model="password" type="password" placeholder="请输入密码" clearable></el-input>
-                </el-form-item>
-                <el-form-item label="重复输入密码">
-                    <el-input class="e-input" v-model="reenter" type="password" placeholder="请重复输入密码" clearable></el-input>
-                </el-form-item>
-            </el-form>
-            <el-button type="success" @click="confirm">确定</el-button>
-        </div>
-    </el-main>
+        </el-aside>
+        <el-main class="main">
+            <div class="upload-part" v-if="key === 1">
+                <div class="btt" @click="upload"><i class="el-icon-upload2"></i>今日考勤信息上传</div>
+                <input type="file" accept=".txt, .dat" class="input-btt" ref="uploadBtt" @change="uploadFile">
+            </div>
+            <div v-if="key === 2">
+                <el-table :data="unValidate">
+                    <el-table-column prop="name" label="姓名"></el-table-column>
+                    <el-table-column prop="id" label="工号"></el-table-column>
+                    <el-table-column prop="duty" label="负责班级"></el-table-column>
+                    <el-table-column label="操作">
+                        <template slot-scope="scope">
+                            <el-button type="success" @click="validate(scope.row.id)" round>授权</el-button>
+                            <el-button type="warning" @click="refuse(scope.row.id)" round>删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+            <div v-if="key === 3">
+                <el-form>
+                    <el-form-item label="新密码">
+                        <el-input class="e-input" v-model="password" type="password" placeholder="请输入密码" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item label="重复输入密码">
+                        <el-input class="e-input" v-model="reenter" type="password" placeholder="请重复输入密码" clearable></el-input>
+                    </el-form-item>
+                </el-form>
+                <el-button type="success" @click="confirm">确定</el-button>
+            </div>
+        </el-main>
     </el-container>
 </template>
 <script>
@@ -92,8 +93,8 @@
                             });
                             const record = {};
                             record.id = id;
-                            record.start = userRecord[0].punch;
-                            record.end = userRecord[userRecord.length - 1].punch;
+                            record.start = userRecord.length === 0 ? '' :userRecord[0].punch;
+                            record.end = userRecord.length > 1 ? '' : userRecord[userRecord.length - 1].punch;
                             return record;
                         });
                         const recordData = JSON.stringify(records);
@@ -173,8 +174,21 @@
                             type: 'success',
                             message: '成功授权'
                         })
+                    } else {
+                        this.$message.error(res.message);
                     }
                 })
+            },
+            refuse(id) {
+                zstuAjax('/del', {
+                    id
+                }, 'GET').then((res) => {
+                    this.tableInit();
+                    this.$message({
+                        type: 'success',
+                        message: res.message
+                    })
+                });
             }
         }
     }

@@ -47,8 +47,8 @@
             <div class="title">登陆</div>
             <div class="form-wrapper">
                 <el-form ref="form" :model="form">
-                    <el-form-item label="账号" prop="account">
-                        <el-input class="e-input" v-model="form.account" placeholder="学生输入学号，教师输入工号" clearable></el-input>
+                    <el-form-item label="账号" prop="id">
+                        <el-input class="e-input" v-model="form.id" placeholder="学生输入学号，教师输入工号" clearable></el-input>
                         <el-tooltip class="item" effect="dark" content="学生输入学号，教师输入工号" placement="top-start">
                             <i class="el-icon-question"></i>
                         </el-tooltip>
@@ -146,12 +146,14 @@
             },
             login() {
                 zstuAjax('/login', {
-                    id: this.form.account,
+                    id: this.form.id,
                     pass: this.form.password
                 }, 'GET').then((res) => {
                     if (res.success) {
                         if (+res.type === 3) {
                             this.$router.push('/manager');
+                        } else if (+res.type === 2) {
+                            this.$router.push('/teacher');
                         }
                     } else {
                         this.$message.error(res.message);

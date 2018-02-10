@@ -18,6 +18,13 @@ const teacher = DB.define('teacher', {
     timestamps: false
 });
 teacher.sync({force: false, logging: false});
+exports.check = function(id) {
+    return teacher.findOne({
+        where: {
+            id
+        }
+    })
+};
 exports.getUnvalidate = function() {
     return teacher.findAll({
         where: {
@@ -41,4 +48,11 @@ exports.validate = function(id) {
             id
         }
     })
+};
+exports.deleteTeacher = function(id) {
+    return teacher.destroy({
+        where: {
+            id
+        }
+    });
 };
