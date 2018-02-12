@@ -21,3 +21,10 @@ exports.addStudent = function(id, clas) {
 exports.getStudents = function() {
     return student.findAll();
 };
+exports.classStudents = function(clas) {
+    return student.findAll({
+        where: {
+            clas
+        }
+    })
+};

@@ -33,6 +33,13 @@ exports.getCertainClass = function(ids) {
         }
     });
 };
+exports.getTeacherClass = function(id) {
+    return allClasses.findAll({
+        where: {
+            teacher: id
+        }
+    });
+};
 exports.setCharge = function(teacher, arr) {
     return allClasses.update({
         teacher

@@ -94,7 +94,7 @@
                             const record = {};
                             record.id = id;
                             record.start = userRecord.length === 0 ? '' :userRecord[0].punch;
-                            record.end = userRecord.length > 1 ? '' : userRecord[userRecord.length - 1].punch;
+                            record.end = userRecord.length <= 1 ? '' : userRecord[userRecord.length - 1].punch;
                             return record;
                         });
                         const recordData = JSON.stringify(records);

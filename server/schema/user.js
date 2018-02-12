@@ -19,7 +19,9 @@ const user = DB.define('users', {
     timestamps: false
 });
 user.sync({force: false, logging: false});
-
+exports.getAllUser = function() {
+    return user.findAll();
+};
 exports.findUser = function(id) {
     return user.findOne({
         where: {

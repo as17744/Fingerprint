@@ -19,7 +19,27 @@ const records = DB.define('records', {
     timestamps: false
 });
 records.sync({force: false, logging: false});
-
+exports.getRecords = function(ids, month) {
+    return records.findAll({
+        where: {
+            id: ids,
+            date: {
+                $like: `${month}%`,
+            }
+        }
+    })
+};
 exports.insertRecords = function(data) {
     return records.bulkCreate(data);
+};
+exports.modifyRecord = function(id, date, start, end) {
+    return records.update({
+        start,
+        end
+    }, {
+        where: {
+            id,
+            date
+        }
+    })
 };

@@ -7,9 +7,15 @@
                         <i class="el-icon-setting"></i>
                         <span slot="title">时间设置</span>
                     </el-menu-item>
+                    <el-menu-item index="2">
+                        <i class="el-icon-edit"></i>
+                        <span slot="title">忘打卡审批</span>
+                    </el-menu-item>
                 </el-menu>
             </el-aside>
             <el-main class="main">
+                <Timeset v-if="key === 1"></Timeset>
+                <Approve v-if="key === 2"></Approve>
             </el-main>
         </el-container>
         <div class="info">你好， {{name}}老师</div>
@@ -27,6 +33,8 @@
 <script>
     import _ from 'lodash';
     import zstuAjax from '../../lib/zstuAjax';
+    import Timeset from './teacher/timeset.vue';
+    import Approve from './teacher/approve.vue';
     export default {
         data() {
             return {
@@ -58,6 +66,10 @@
                     })
                 }
             })
+        },
+        components: {
+            Timeset,
+            Approve
         }
     }
 </script>
