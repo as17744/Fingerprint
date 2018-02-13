@@ -28,3 +28,10 @@ exports.classStudents = function(clas) {
         }
     })
 };
+exports.findStudent = function(id) {
+    return student.findOne({
+        where: {
+            id
+        }
+    })
+};

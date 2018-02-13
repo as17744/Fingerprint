@@ -154,6 +154,8 @@
                             this.$router.push('/manager');
                         } else if (+res.type === 2) {
                             this.$router.push('/teacher');
+                        } else if (+res.type === 1) {
+                            this.$router.push('/student');
                         }
                     } else {
                         this.$message.error(res.message);

@@ -1,63 +1,58 @@
 <template>
-    <el-container>
-        <el-aside width="200px">
-            <el-menu default-active="1" class="el-menu-vertical" @select="handleSelect">
-                <el-menu-item index="1">
-                    <i class="el-icon-location"></i>
-                    <span slot="title">数据导入</span>
-                </el-menu-item>
-                <el-menu-item index="2">
-                    <i class="el-icon-circle-plus-outline"></i>
-                    <span slot="title">教师审核</span>
-                </el-menu-item>
-                <el-menu-item index="3">
-                    <i class="el-icon-setting"></i>
-                    <span slot="title">密码修改</span>
-                </el-menu-item>
-            </el-menu>
-        </el-aside>
-        <el-main class="main">
-            <div class="upload-part" v-if="key === 1">
-                <div class="btt" @click="upload"><i class="el-icon-upload2"></i>今日考勤信息上传</div>
-                <input type="file" accept=".txt, .dat" class="input-btt" ref="uploadBtt" @change="uploadFile">
-            </div>
-            <div v-if="key === 2">
-                <el-table :data="unValidate">
-                    <el-table-column prop="name" label="姓名"></el-table-column>
-                    <el-table-column prop="id" label="工号"></el-table-column>
-                    <el-table-column prop="duty" label="负责班级"></el-table-column>
-                    <el-table-column label="操作">
-                        <template slot-scope="scope">
-                            <el-button type="success" @click="validate(scope.row.id)" round>授权</el-button>
-                            <el-button type="warning" @click="refuse(scope.row.id)" round>删除</el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </div>
-            <div v-if="key === 3">
-                <el-form>
-                    <el-form-item label="新密码">
-                        <el-input class="e-input" v-model="password" type="password" placeholder="请输入密码" clearable></el-input>
-                    </el-form-item>
-                    <el-form-item label="重复输入密码">
-                        <el-input class="e-input" v-model="reenter" type="password" placeholder="请重复输入密码" clearable></el-input>
-                    </el-form-item>
-                </el-form>
-                <el-button type="success" @click="confirm">确定</el-button>
-            </div>
-        </el-main>
-    </el-container>
+    <div>
+        <el-container>
+            <el-aside width="200px">
+                <el-menu default-active="1" class="el-menu-vertical" @select="handleSelect">
+                    <el-menu-item index="1">
+                        <i class="el-icon-location"></i>
+                        <span slot="title">数据导入</span>
+                    </el-menu-item>
+                    <el-menu-item index="2">
+                        <i class="el-icon-circle-plus-outline"></i>
+                        <span slot="title">教师审核</span>
+                    </el-menu-item>
+                    <el-menu-item index="3">
+                        <i class="el-icon-setting"></i>
+                        <span slot="title">密码修改</span>
+                    </el-menu-item>
+                </el-menu>
+            </el-aside>
+            <el-main class="main">
+                <div class="upload-part" v-if="key === 1">
+                    <div class="btt" @click="upload"><i class="el-icon-upload2"></i>今日考勤信息上传</div>
+                    <input type="file" accept=".txt, .dat" class="input-btt" ref="uploadBtt" @change="uploadFile">
+                </div>
+                <div v-if="key === 2">
+                    <el-table :data="unValidate">
+                        <el-table-column prop="name" label="姓名"></el-table-column>
+                        <el-table-column prop="id" label="工号"></el-table-column>
+                        <el-table-column prop="duty" label="负责班级"></el-table-column>
+                        <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <el-button type="success" @click="validate(scope.row.id)" round>授权</el-button>
+                                <el-button type="warning" @click="refuse(scope.row.id)" round>删除</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+                <div v-if="key === 3">
+                    <Password></Password>
+                </div>
+            </el-main>
+        </el-container>
+        <Back></Back>
+    </div>
 </template>
 <script>
     import _ from 'lodash';
     import zstuAjax from '../../lib/zstuAjax';
+    import Password from './common/password.vue';
+    import Back from './common/back.vue';
     export default {
         data() {
             return {
                 key: 1,
                 name: '',
-                password: '',
-                reenter: '',
                 unValidate: []
             }
         },
@@ -142,28 +137,6 @@
             upload() {
                 this.$refs.uploadBtt.click();
             },
-            confirm() {
-                if (!this.password) {
-                    this.$message.error('请输入新密码');
-                } else if (!this.reenter) {
-                    this.$message.error('请重复输入密码');
-                } else if (this.password !== this.reenter) {
-                    this.$message.error('两次密码不一致');
-                } else {
-                    zstuAjax('/modify', {
-                        pass: this.password
-                    }, 'GET').then((res) => {
-                        if (res.success) {
-                            this.$message({
-                                message: res.message,
-                                type: 'success'
-                            });
-                        } else {
-                            this.$message.error(res.message);
-                        }
-                    })
-                }
-            },
             validate(id) {
                 zstuAjax('/validate', {
                     id
@@ -190,6 +163,10 @@
                     })
                 });
             }
+        },
+        components: {
+            Password,
+            Back
         }
     }
 </script>
@@ -218,7 +195,7 @@
         }
     }
     .el-menu-vertical {
-        height: 950px;
+        height: 1000px;
         width: 200px;
     }
     .input-btt {

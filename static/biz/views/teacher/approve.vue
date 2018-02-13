@@ -13,7 +13,7 @@
         <el-table-column prop="end" label="实际开始离开时间">
         </el-table-column>
         <el-table-column prop="operation" label="操作">
-            <template scope="s">
+            <template slot-scope="s">
                 <el-button type="primary" size="mini" round @click="allow(s.row.id, s.row.date, s.row.start, s.row.end)">批准</el-button>
                 <el-button type="warning" size="mini" round @click="refuse(s.row.id, s.row.date)">拒绝</el-button>
             </template>

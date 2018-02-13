@@ -13,6 +13,9 @@ const checkT = require('../controller/checkTeacherController');
 const setTime = require('../controller/timeController');
 const request = require('../controller/requestContoller');
 const excel = require('../controller/excelController');
+const getRecord = require('../controller/getRecordsController');
+const needReq = require('../controller/unnormalPunchController');
+const addReq = require('../controller/addRequestController');
 
 const router = new Router();
 router.get('/getClasses', getClasses);
@@ -31,4 +34,7 @@ router.get('/getRequests', request.getRequest);
 router.get('/allowReq', request.allowReq);
 router.get('/deleteReq', request.deleteRequest);
 router.get('/excel', excel);
+router.get('/getRecord', getRecord);
+router.get('/needReq', needReq);
+router.get('/addReq', addReq);
 module.exports = router;
