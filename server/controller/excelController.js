@@ -54,7 +54,7 @@ module.exports = async(ctx, next) => {
         }
         return obj;
     });
-    const fileName = `${classId}班${month}月考勤报表`;
+    const fileName = `${classInf[0].name}${month}月考勤报表`;
     const m = new Date(year, month, 0);
     const dayNum = m.getDate();
     const conf = {};

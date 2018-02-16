@@ -13,10 +13,12 @@ const allClasses = DB.define('classes', {
         type: Sequelize.INTEGER
     },
     start: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        defaultValue: '9:0:0'
     },
     end: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        defaultValue: "9:0:0"
     }
 }, {
     timestamps: false

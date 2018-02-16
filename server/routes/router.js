@@ -16,6 +16,7 @@ const excel = require('../controller/excelController');
 const getRecord = require('../controller/getRecordsController');
 const needReq = require('../controller/unnormalPunchController');
 const addReq = require('../controller/addRequestController');
+const conclude = require('../controller/concludeController');
 
 const router = new Router();
 router.get('/getClasses', getClasses);
@@ -37,4 +38,5 @@ router.get('/excel', excel);
 router.get('/getRecord', getRecord);
 router.get('/needReq', needReq);
 router.get('/addReq', addReq);
+router.get('/conclude', conclude);
 module.exports = router;

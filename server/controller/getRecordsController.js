@@ -36,14 +36,22 @@ module.exports = async(ctx, next) => {
     const standardStart = new Date(year, month, day, +startItem[0], +startItem[1], +startItem[2]);
     const standardEnd = new Date(year, month, day, +endItem[0], +endItem[1], +endItem[2]);
     const monthArr = [];
+    let duration = 0;
+    let absence = 0;
+    let total = 0;
     for (let i = 1; i <= dayNum; i++) {
         const validDay = _.find(recordInf, (j) => {
             return j.day === i;
         });
         if (validDay) {
+            total++;
+            if (!validDay.start && !validDay.end) {
+                absence++;
+            }
             if (!validDay.start || !validDay.end) {
                 monthArr.push(0);
             } else {
+                duration += (validDay.end.getTime() - validDay.start.getTime());
                 if (validDay.start <= standardStart && validDay.end >= standardEnd) {
                     monthArr.push(1);
                 } else {
@@ -54,8 +62,13 @@ module.exports = async(ctx, next) => {
             monthArr.push('');
         }
     }
+    const presentRate = ((total - absence) / total).toFixed(2);
     ctx.body = {
         success: true,
+        start: classInf[0].start,
+        end: classInf[0].end,
+        duration,
+        rate: presentRate,
         data: monthArr
     };
     next();

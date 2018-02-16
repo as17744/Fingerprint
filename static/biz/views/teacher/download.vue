@@ -1,6 +1,9 @@
 <template>
     <div>
-        <div class="get-excel" v-for="item in classes"><el-button type="primary" @click="exelDownload(item)">下载本月{{item}}班考勤报表</el-button></div>
+        <div class="get-excel" v-for="item in classes">
+            <el-button type="primary" @click="exelDownload(item, 1)">下载本月{{item}}班考勤报表</el-button>
+            <el-button type="primary" @click="exelDownload(item, 2)">下载本月{{item}}班汇总报表</el-button>
+        </div>
     </div>
 </template>
 <script>
@@ -19,12 +22,20 @@
                     this.classes = this.classes.concat(classes);
                 });
             },
-            exelDownload(id) {
-                zstuAjax('/excel', {
-                    id
-                }, 'GET').then((res) => {
-                    window.location.href = res.path;
-                });
+            exelDownload(id, type) {
+                if (type === 1) {
+                    zstuAjax('/excel', {
+                        id
+                    }, 'GET').then((res) => {
+                        window.location.href = res.path;
+                    });
+                } else if (type === 2) {
+                    zstuAjax('/conclude', {
+                        id
+                    }, 'GET').then((res) => {
+                        window.location.href = res.path;
+                    });
+                }
             }
         },
         mounted() {
@@ -34,7 +45,6 @@
 </script>
 <style lang="less">
     .get-excel {
-        float: left;
-        margin-left: 10px;
+        margin-bottom: 20px;
     }
 </style>
