@@ -25,7 +25,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <div><span class="footer">本月出勤率{{tipsInf.rate}}</span><span>本月实验总时长{{tipsInf.duration}}小时</span></div>
+        <div><span class="footer">本月出勤率{{tipsInf.rate}}</span><span>本月实验总时长{{tipsInf.duration}}小时</span><span class="abnormal-rate">本月异常率: {{tipsInf.abnormal}}</span></div>
     </div>
 </template>
 <script>
@@ -61,6 +61,7 @@
                     this.tipsInf.end = res.end;
                     this.tipsInf.duration = Math.floor(res.duration / (1000 * 60 * 60));
                     this.tipsInf.rate = res.rate;
+                    this.tipsInf.abnormal = `${res.abnormal * 100}%`;
                 })
             }
         },
@@ -78,5 +79,9 @@
     }
     .footer {
         margin-right: 30px;
+    }
+    .abnormal-rate {
+        margin-left: 30px;
+        color: #FF0000;
     }
 </style>

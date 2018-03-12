@@ -27,7 +27,7 @@ module.exports = async(ctx, next) => {
         }
         return obj;
     });
-    const dayNum = +new Date(year, month, 0).getDate();
+    const dayNum = +new Date(year, month, 0).getDate(); //拿到当月总天数
     const selfInf = await students.findStudent(id);
     const clas = +selfInf.clas;
     const classInf = await classes.getCertainClass(clas);
@@ -36,6 +36,7 @@ module.exports = async(ctx, next) => {
     const standardStart = new Date(year, month, day, +startItem[0], +startItem[1], +startItem[2]);
     const standardEnd = new Date(year, month, day, +endItem[0], +endItem[1], +endItem[2]);
     const monthArr = [];
+    let abnormal = 0;
     let duration = 0;
     let absence = 0;
     let total = 0;
@@ -50,18 +51,21 @@ module.exports = async(ctx, next) => {
             }
             if (!validDay.start || !validDay.end) {
                 monthArr.push(0);
+                abnormal++;
             } else {
                 duration += (validDay.end.getTime() - validDay.start.getTime());
                 if (validDay.start <= standardStart && validDay.end >= standardEnd) {
                     monthArr.push(1);
                 } else {
                     monthArr.push(0);
+                    abnormal++;
                 }
             }
         } else {
             monthArr.push('');
         }
     }
+    const abnormalRate = (abnormal / total).toFixed(2);
     const presentRate = ((total - absence) / total).toFixed(2);
     ctx.body = {
         success: true,
@@ -69,6 +73,7 @@ module.exports = async(ctx, next) => {
         end: classInf[0].end,
         duration,
         rate: presentRate,
+        abnormal: abnormalRate,
         data: monthArr
     };
     next();
