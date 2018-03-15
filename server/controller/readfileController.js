@@ -6,16 +6,23 @@ module.exports = async(ctx, next) => {
     const month = date.getMonth()+1;
     const day = date.getDate();
     const today = `${year}-${month}-${day}`;
+    const noon = new Date(year, month, day, 12, 0, 0);
     punchRecords.map((item) => {
         item.id = +item.id;
         item.date = today;
+        let onlyPunchTime = 0;
         if (item.start) {
             item.start = item.start.split(' ')[1];
+            const frag = item.start.split(':');
+            onlyPunchTime = new Date(year, month, day, +frag[0], +frag[1], +frag[2]);
         } else {
             item.start = '';
         }
         if (item.end) {
             item.end = item.end.split(' ')[1];
+        } else if (item.start && onlyPunchTime > noon){
+            item.end = item.start;
+            item.start = '';
         } else {
             item.end = '';
         }

@@ -80,7 +80,7 @@
                         useInf.punch = chips[1];
                         return useInf;
                     });
-                    zstuAjax('getId', {}, 'GET').then((res) => {
+                    zstuAjax('/getId', {}, 'GET').then((res) => {
                         const ids = res.data;
                         const records = _.map(ids, (id) => {
                             const userRecord = _.filter(arr, (item) => {

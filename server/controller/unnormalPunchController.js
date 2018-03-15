@@ -17,6 +17,7 @@ module.exports = async(ctx, next) => {
     const endItem = classInf[0].end.split(':');
     const standardStart = new Date(year, month, day, +startItem[0], +startItem[1], +startItem[2]);
     const standardEnd = new Date(year, month, day, +endItem[0], +endItem[1], +endItem[2]);
+    const noon = new Date(year, month, day, 12, 0, 0);
     const data = _.filter(recordsInf, (res) => {
         if (!res.start || !res.end) {
             return true;
