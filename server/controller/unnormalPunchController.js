@@ -2,6 +2,7 @@ const _ = require('lodash');
 const records = require('../schema/records');
 const students = require('../schema/students');
 const classes = require('../schema/allClasses');
+const timeCompare = require('../common/timeCompare');
 module.exports = async(ctx, next) => {
     const id = ctx.session.id;
     const date = new Date();
@@ -19,10 +20,15 @@ module.exports = async(ctx, next) => {
     const standardEnd = new Date(year, month, day, +endItem[0], +endItem[1], +endItem[2]);
     const noon = new Date(year, month, day, 12, 0, 0);
     const data = _.filter(recordsInf, (res) => {
-        if (!res.start || !res.end) {
+        if (res.start && res.end) {
+            const earlier = timeCompare.timeCompare(res.start, standardStart);
+            const later = !timeCompare.timeCompare(res.end, standardEnd);
+            if ((earlier && later) || res.start === res.end) {
+                return false;
+            }
             return true;
         } else {
-            return false;
+            return true;
         }
     });
     ctx.body = {

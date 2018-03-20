@@ -6,7 +6,7 @@
             <el-table-column prop="end" label="离开实验室打卡"></el-table-column>
             <el-table-column>
                 <template slot-scope="s">
-                    <el-button type="primary" @click="showDialog(s.row.date, s.row.start, s.row.end)">申请</el-button>
+                    <el-button type="primary" @click="showDialog(s.row.date, s.row.start, s.row.end)" :disabled="s.row.status">申请</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -46,6 +46,13 @@
         methods: {
             init() {
                 zstuAjax('/needReq', {}, 'GET').then((res) => {
+                    res.data.map((i) => {
+                        if (i.start && i.end) {
+                            i.status = true;
+                        } else {
+                            i.status = false;
+                        }
+                    });
                     this.failArr.splice(0);
                     this.failArr = this.failArr.concat(res.data);
                 })

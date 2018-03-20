@@ -16,6 +16,10 @@
                         <span slot="title">报表下载</span>
                     </el-menu-item>
                     <el-menu-item index="4">
+                        <i class="el-icon-date"></i>
+                        <span slot="title">请假审批</span>
+                    </el-menu-item>
+                    <el-menu-item index="5">
                         <i class="el-icon-setting"></i>
                         <span slot="title">密码修改</span>
                     </el-menu-item>
@@ -25,7 +29,8 @@
                 <Timeset v-if="key === 1"></Timeset>
                 <Approve v-if="key === 2"></Approve>
                 <Download v-if="key === 3"></Download>
-                <Password v-if="key === 4"></Password>
+                <Deal v-if="key === 4"></Deal>
+                <Password v-if="key === 5"></Password>
             </el-main>
         </el-container>
         <div class="info">你好， {{name}}老师</div>
@@ -43,6 +48,7 @@
     import zstuAjax from '../../lib/zstuAjax';
     import Timeset from './teacher/timeset.vue';
     import Approve from './teacher/approve.vue';
+    import Deal from './teacher/dealRest.vue';
     import Download from './teacher/download.vue';
     import Password from './common/password.vue';
     import Back from './common/back.vue';
@@ -80,6 +86,7 @@
             Approve,
             Download,
             Password,
+            Deal,
             Back
         }
     }

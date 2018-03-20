@@ -29,7 +29,7 @@
                         obj.name = item.name;
                         obj.id = item.id;
                         const today = new Date();
-                        const y = today.getFullYear(); 
+                        const y = today.getFullYear();
                         const m = today.getMonth()+1;
                         const d = today.getDate(); 
                         if(item.start) {

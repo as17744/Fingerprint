@@ -1,4 +1,6 @@
 const records = require('../schema/records');
+const vacation = require('../schema/vacation');
+const _ = require('lodash');
 module.exports = async(ctx, next) => {
     const punchRecords = JSON.parse(ctx.query.records);
     const date = new Date();
@@ -6,6 +8,7 @@ module.exports = async(ctx, next) => {
     const month = date.getMonth()+1;
     const day = date.getDate();
     const today = `${year}-${month}-${day}`;
+    const todayReq = await vacation.findDateRequests(today);
     const noon = new Date(year, month, day, 12, 0, 0);
     punchRecords.map((item) => {
         item.id = +item.id;
@@ -25,6 +28,13 @@ module.exports = async(ctx, next) => {
             item.start = '';
         } else {
             item.end = '';
+        }
+        const reqExist = _.find(todayReq, (i) => {
+            return i.id === item.id;
+        });
+        if (reqExist) {
+            item.start = '0:0:0';
+            item.end = '0:0:0';
         }
     });
     try {

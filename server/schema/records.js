@@ -43,3 +43,29 @@ exports.modifyRecord = function(id, date, start, end) {
         }
     })
 };
+exports.vacate = function(id,date) {
+    return records.update({
+        start: '0:0:0',
+        end: '0:0:0'
+    }, {
+        where: {
+            id,
+            date
+        }
+    })
+};
+exports.findARecord = function(id, date) {
+    return records.findOne({
+        where: {
+            id,
+            date
+        }
+    })
+};
+exports.killRecords = function(date) {
+    return records.destroy({
+        where: {
+            date
+        }
+    })
+};

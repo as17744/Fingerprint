@@ -19,7 +19,10 @@
             </el-aside>
             <el-main class="main">
                 <div class="upload-part" v-if="key === 1">
-                    <div class="btt" @click="upload"><i class="el-icon-upload2"></i>今日考勤信息上传</div>
+                    <div class="btt-part">
+                        <div class="btt" @click="upload"><i class="el-icon-upload2"></i>今日考勤信息上传</div>
+                        <div class="cancel-btt" @click="killRecords"><i class="el-icon-error"></i>删除今日考勤数据</div>
+                    </div>
                     <input type="file" accept=".txt, .dat" class="input-btt" ref="uploadBtt" @change="uploadFile">
                 </div>
                 <div v-if="key === 2">
@@ -137,6 +140,32 @@
             upload() {
                 this.$refs.uploadBtt.click();
             },
+            killRecords() {
+                const today = new Date();
+                const y = today.getFullYear();
+                const m = today.getMonth() + 1;
+                const d = today.getDate();
+                const dateTime = `${y}-${m}-${d}`;
+                this.$confirm('确定删除今日数据?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    zstuAjax('/kill', {
+                        date: dateTime
+                    }).then((res) => {
+                        this.$message({
+                            type: 'success',
+                            message: `${res.message}`
+                        });
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消删除'
+                    });          
+                });
+            },
             validate(id) {
                 zstuAjax('/validate', {
                     id
@@ -178,8 +207,12 @@
         width: 100%;
         height: 100%;
         text-align: center;
-        .btt {
+        .btt-part {
             margin: 200px auto;
+            text-align: center;
+        }
+        .btt {
+            display: inline-block;
             width: 200px;
             height: 80px;
             border-radius: 8px;
@@ -189,6 +222,22 @@
             font-size: 20px;
             color: #fff;
             background: #04fa6c;
+            &:hover {
+                cursor: pointer;
+            }
+        }
+        .cancel-btt {
+            display: inline-block;
+            margin-left: 10px;
+            width: 200px;
+            height: 80px;
+            border-radius: 8px;
+            border: 1px solid #EEEE00;
+            line-height: 80px;
+            text-align: center;
+            font-size: 20px;
+            color: #fff;
+            background: #FFA500;
             &:hover {
                 cursor: pointer;
             }

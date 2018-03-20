@@ -39,10 +39,14 @@ module.exports = async(ctx, next) => {
         let abnormal = 0;
         let duration = 0;
         let absence = 0;
+        let rest = 0;
         _.map(identityInfo, (d) => {
             if (!d.start && !d.end) {
                 absence ++;
-            } 
+            }
+            if (d.start === d.end) {
+                rest++;
+            }
             if (!d.start || !d.end) {
                 abnormal++;
             } else if (d.start && d.end) {
@@ -65,6 +69,7 @@ module.exports = async(ctx, next) => {
         obj.push(`${Math.floor(duration)}`);
         obj.push(((identityInfo.length - absence) / identityInfo.length).toFixed(2));
         obj.push((abnormal / identityInfo.length).toFixed(2));
+        obj.push(`${rest}`);
         return obj;
     });
     const conf = {};
@@ -85,6 +90,11 @@ module.exports = async(ctx, next) => {
     },
     {
         caption: '异常率',
+        type: 'string',
+        width: 20
+    },
+    {
+        caption: '请假天数',
         type: 'string',
         width: 20
     }];

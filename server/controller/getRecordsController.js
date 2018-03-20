@@ -36,6 +36,7 @@ module.exports = async(ctx, next) => {
     const standardStart = new Date(year, month, day, +startItem[0], +startItem[1], +startItem[2]);
     const standardEnd = new Date(year, month, day, +endItem[0], +endItem[1], +endItem[2]);
     const monthArr = [];
+    let rest = 0;
     let abnormal = 0;
     let duration = 0;
     let absence = 0;
@@ -56,6 +57,9 @@ module.exports = async(ctx, next) => {
                 duration += (validDay.end.getTime() - validDay.start.getTime());
                 if (validDay.start <= standardStart && validDay.end >= standardEnd) {
                     monthArr.push(1);
+                } else if (+validDay.start === +validDay.end) {
+                    monthArr.push(2);
+                    rest++;
                 } else {
                     monthArr.push(0);
                     abnormal++;
@@ -72,6 +76,7 @@ module.exports = async(ctx, next) => {
         start: classInf[0].start,
         end: classInf[0].end,
         duration,
+        rest,
         rate: presentRate,
         abnormal: abnormalRate,
         data: monthArr

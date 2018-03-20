@@ -17,6 +17,8 @@ const getRecord = require('../controller/getRecordsController');
 const needReq = require('../controller/unnormalPunchController');
 const addReq = require('../controller/addRequestController');
 const conclude = require('../controller/concludeController');
+const vacation = require('../controller/vacationController');
+const kill = require('../controller/killRecordsController');
 
 const router = new Router();
 router.get('/getClasses', getClasses);
@@ -39,4 +41,6 @@ router.get('/getRecord', getRecord);
 router.get('/needReq', needReq);
 router.get('/addReq', addReq);
 router.get('/conclude', conclude);
+router.get('/vacation', vacation);
+router.get('/kill', kill);
 module.exports = router;

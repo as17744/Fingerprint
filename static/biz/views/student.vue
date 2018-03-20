@@ -12,6 +12,10 @@
                         <span slot="title">忘打卡请求</span>
                     </el-menu-item>
                     <el-menu-item index="3">
+                        <i class="el-icon-date"></i>
+                        <span slot="title">请假</span>
+                    </el-menu-item>
+                    <el-menu-item index="4">
                         <i class="el-icon-setting"></i>
                         <span slot="title">密码修改</span>
                     </el-menu-item>
@@ -20,7 +24,8 @@
             <el-main class="main">
                 <Detail v-if="key === 1"></Detail>
                 <Request v-if="key === 2"></Request>
-                <Password v-if="key === 3"></Password>
+                <Rest v-if="key === 3"></Rest>
+                <Password v-if="key === 4"></Password>
             </el-main>
         </el-container>
         <div class="hello">你好，{{name}}同学</div>
@@ -30,6 +35,7 @@
 <script>
     import Back from './common/back.vue';
     import Detail from './student/detail.vue';
+    import Rest from './student/vacation.vue';
     import Request from './student/request.vue';
     import Password from './common/password.vue';
     import zstuAjax from '../../lib/zstuAjax';
@@ -56,6 +62,7 @@
         },
         components: {
             Back,
+            Rest,
             Password,
             Detail,
             Request
