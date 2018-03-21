@@ -44,6 +44,10 @@
             </el-main>
         </el-container>
         <Back></Back>
+        <div class="tip-container" v-if="key === 1">
+            <div class="tip-wrap undone" v-if="!jobDone">今日数据未导入</div>
+            <div class="tip-wrap done" v-if="jobDone">今日数据已导入</div>
+        </div>
     </div>
 </template>
 <script>
@@ -51,12 +55,18 @@
     import zstuAjax from '../../lib/zstuAjax';
     import Password from './common/password.vue';
     import Back from './common/back.vue';
+    const today = new Date();
+    const y = today.getFullYear();
+    const m = today.getMonth() + 1;
+    const d = today.getDate();
+    const dateTime = `${y}-${m}-${d}`;
     export default {
         data() {
             return {
                 key: 1,
                 name: '',
-                unValidate: []
+                unValidate: [],
+                jobDone: false
             }
         },
         created() {
@@ -68,7 +78,21 @@
                 }
             })
         },
+        mounted() {
+            this.init();
+        },
         methods: {
+            init() {
+                zstuAjax('/records', {
+                    date: dateTime
+                }, 'GET').then((res) => {
+                    if (res.data.length) {
+                        this.jobDone = true;
+                    } else {
+                        this.jobDone = false;
+                    }
+                });
+            },
             uploadFile() {
                 const reader = new FileReader();
                 reader.readAsText(this.$refs.uploadBtt.files[0], 'gbk');
@@ -102,7 +126,9 @@
                             if (res.success) {
                                 that.$alert('今日所有打卡记录已经导入，记得清空指纹考勤机所有考勤数据噢！', '提示', {
                                     confirmButtonText: '确定',
-                                    callback: action => {}
+                                    callback: action => {
+                                        that.init();
+                                    }
                                   });
                             } else {
                                 that.$message.error('今天已经导入过了');
@@ -141,11 +167,6 @@
                 this.$refs.uploadBtt.click();
             },
             killRecords() {
-                const today = new Date();
-                const y = today.getFullYear();
-                const m = today.getMonth() + 1;
-                const d = today.getDate();
-                const dateTime = `${y}-${m}-${d}`;
                 this.$confirm('确定删除今日数据?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -154,6 +175,7 @@
                     zstuAjax('/kill', {
                         date: dateTime
                     }).then((res) => {
+                        this.init();
                         this.$message({
                             type: 'success',
                             message: `${res.message}`
@@ -249,5 +271,32 @@
     }
     .input-btt {
         display: none;
+    }
+    .tip-container {
+        overflow-x: hidden;
+        position: absolute;
+        left: 50%;
+        top: 100px;
+        width: 400px;
+        margin-left: -200px;
+        .tip-wrap {
+            width: 130px;
+            animation: mymove 5s linear 0s infinite;
+        }
+        .done {
+            color: #7CFC00;
+        }
+        .undone {
+            color: #CD0000;
+        }
+    }
+    @keyframes mymove
+    {
+        from {
+            margin-left: 400px;
+        }
+        to {
+            margin-left: -130px;
+        }
     }
 </style>

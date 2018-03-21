@@ -62,6 +62,13 @@ exports.findARecord = function(id, date) {
         }
     })
 };
+exports.findDateRecord = function(date) {
+    return records.findAll({
+        where: {
+            date
+        }
+    })
+};
 exports.killRecords = function(date) {
     return records.destroy({
         where: {
