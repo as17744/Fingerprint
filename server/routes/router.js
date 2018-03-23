@@ -20,6 +20,7 @@ const conclude = require('../controller/concludeController');
 const vacation = require('../controller/vacationController');
 const kill = require('../controller/killRecordsController');
 const dateRecords = require('../controller/dateRecordsController');
+const datas = require('../controller/dataController');
 
 const router = new Router();
 router.get('/getClasses', getClasses);
@@ -45,4 +46,5 @@ router.get('/conclude', conclude);
 router.get('/vacation', vacation);
 router.get('/kill', kill);
 router.get('/records', dateRecords);
+router.get('/datas', datas);
 module.exports = router;
