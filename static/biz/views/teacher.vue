@@ -8,18 +8,22 @@
                         <span slot="title">时间设置</span>
                     </el-menu-item>
                     <el-menu-item index="2">
+                        <i class="el-icon-question"></i>
+                        <span slot="title">查询</span>
+                    </el-menu-item>
+                    <el-menu-item index="3">
                         <i class="el-icon-edit"></i>
                         <span slot="title">忘打卡审批</span>
                     </el-menu-item>
-                    <el-menu-item index="3">
+                    <el-menu-item index="4">
                         <i class="el-icon-download"></i>
                         <span slot="title">报表下载</span>
                     </el-menu-item>
-                    <el-menu-item index="4">
+                    <el-menu-item index="5">
                         <i class="el-icon-date"></i>
                         <span slot="title">请假审批</span>
                     </el-menu-item>
-                    <el-menu-item index="5">
+                    <el-menu-item index="6">
                         <i class="el-icon-setting"></i>
                         <span slot="title">密码修改</span>
                     </el-menu-item>
@@ -27,10 +31,11 @@
             </el-aside>
             <el-main class="main">
                 <Timeset v-if="key === 1"></Timeset>
-                <Approve v-if="key === 2"></Approve>
-                <Download v-if="key === 3"></Download>
-                <Deal v-if="key === 4"></Deal>
-                <Password v-if="key === 5"></Password>
+                <Search v-if="key === 2"></Search>
+                <Approve v-if="key === 3"></Approve>
+                <Download v-if="key === 4"></Download>
+                <Deal v-if="key === 5"></Deal>
+                <Password v-if="key === 6"></Password>
             </el-main>
         </el-container>
         <div class="info">你好， {{name}}老师</div>
@@ -46,6 +51,7 @@
 <script>
     import _ from 'lodash';
     import zstuAjax from '../../lib/zstuAjax';
+    import Search from './teacher/search.vue';
     import Timeset from './teacher/timeset.vue';
     import Approve from './teacher/approve.vue';
     import Deal from './teacher/dealRest.vue';
@@ -83,6 +89,7 @@
         },
         components: {
             Timeset,
+            Search,
             Approve,
             Download,
             Password,

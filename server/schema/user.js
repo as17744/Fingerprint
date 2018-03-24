@@ -22,6 +22,14 @@ user.sync({force: false, logging: false});
 exports.getAllUser = function() {
     return user.findAll();
 };
+exports.findIdUsers = function(ids) {
+    return user.findAll({
+        where: {
+            id: ids
+        }
+    });
+};
+
 exports.findUser = function(id) {
     return user.findOne({
         where: {

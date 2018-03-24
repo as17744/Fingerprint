@@ -1,9 +1,7 @@
-const fs = require('fs');
-const path = require('path');
 const _ = require('lodash');
-const excelPort = require('excel-export');
 const teachers = require('../schema/teacher');
 const students = require('../schema/students');
+const users = require('../schema/user');
 const records = require('../schema/records');
 const classesDate = require('../schema/allClasses');
 const timeCompare = require('../common/timeCompare');
@@ -26,6 +24,7 @@ module.exports = async(ctx, next) => {
     const monthRecords = await records.getRecords(ids, searchM); // 本月所有学生打卡记录
     const classInf = await classesDate.getCertainClass(classes); //教师负责的所有班级的信息
     const len = monthRecords.length; //总打卡数量
+    const usersInf = await users.findIdUsers(ids);
     let storeArr = [];
     let punchTime = 0;
     dutyStudents.map((p) => {
@@ -35,7 +34,10 @@ module.exports = async(ctx, next) => {
         const obj = {};
         obj.clas = p.clas;
         obj.id = p.id;
+        const studentName = _.filter(usersInf, (u) => u.id === obj.id)[0].name;
+        obj.name = studentName;
         const classBelong = _.filter(classInf, (clas) => clas.id === +obj.clas); //该学生所属班级的信息
+        obj.className = classBelong[0].name;
         const startItems = classBelong[0].start.split(':');
         const endItems = classBelong[0].end.split(':');
         // 该班级的考勤时间
