@@ -10,11 +10,12 @@ module.exports = async(ctx, next) => {
     const type = ctx.query.type;
     const flag = ctx.query.num;
     const sign = ctx.query.sign;
+    const queryMonth = ctx.query.month;
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth()+1;
     const day = date.getDate();
-    const searchM = `${year}-${month}-`;
+    const searchM = queryMonth ? `${year}-${queryMonth}-` : `${year}-${month}-`;
 
     const userId = ctx.session.id; // 获取教师id
     const teacherInf = await teachers.check(userId); // 教师信息
@@ -66,7 +67,7 @@ module.exports = async(ctx, next) => {
         obj.absence = absence;
         storeArr.push(obj);
     });
-    const days = len / ids.length;
+    const days = (len / ids.length).toFixed(0);
     let dataArr = [];
     if (clas && type) {
         dataArr = dataArr.concat(_.filter(storeArr, (a) => {

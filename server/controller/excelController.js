@@ -15,6 +15,7 @@ module.exports = async(ctx, next) => {
             console.log(`删除文件${uploadDir}/${file}成功`);
         });
     }
+    const queryMonth = ctx.query.month;
     const classId = ctx.query.id;
     const myStudentsInf = await student.classStudents(classId);
     const myStudents = myStudentsInf.map((item) => {
@@ -24,7 +25,7 @@ module.exports = async(ctx, next) => {
     const year = date.getFullYear();
     const month = date.getMonth()+1;
     const day = date.getDate();
-    const searchM = `${year}-${month}-`;
+    const searchM = queryMonth ? `${year}-${queryMonth}-` : `${year}-${month}-`;
     const studentsRecords = await records.getRecords(myStudents, searchM);
     const classInf = await classes.getCertainClass(classId);
     const startTime = classInf[0].start.split(':');
@@ -54,7 +55,7 @@ module.exports = async(ctx, next) => {
         }
         return obj;
     });
-    const fileName = `${classInf[0].name}${month}月考勤报表`;
+    const fileName = queryMonth ? `${classInf[0].name}${queryMonth}月考勤报表` : `${classInf[0].name}${month}月考勤报表`;
     const m = new Date(year, month, 0);
     const dayNum = m.getDate();
     const conf = {};

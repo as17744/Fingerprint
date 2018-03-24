@@ -7,6 +7,7 @@ const records = require('../schema/records');
 const users = require('../schema/user');
 const classes = require('../schema/allClasses');
 module.exports = async(ctx, next) => {
+    const queryMonth = ctx.query.month;
     const uploadDir = path.join(__dirname, '../../', 'static/src/excel');
     const files =  fs.readdirSync(uploadDir);
     if (files.length > 0) {
@@ -29,7 +30,7 @@ module.exports = async(ctx, next) => {
     const endArr = chosenClass[0].end.split(':');
     const standardStart = new Date(year, month, day, +startArr[0], +startArr[1], +startArr[2]);
     const standardEnd = new Date(year, month, day, +endArr[0], +endArr[1], +endArr[2]);
-    const searchM = `${year}-${month}-`;
+    const searchM = queryMonth ? `${year}-${queryMonth}-` : `${year}-${month}-`;
     const studentsRecords = await records.getRecords(myStudents, searchM);
     const usersInf = await users.getAllUser();
     const details = _.map(myStudents, (id) => {
@@ -44,12 +45,12 @@ module.exports = async(ctx, next) => {
             if (!d.start && !d.end) {
                 absence ++;
             }
-            if (d.start === d.end) {
-                rest++;
-            }
             if (!d.start || !d.end) {
                 abnormal++;
             } else if (d.start && d.end) {
+                if (d.start === d.end) {
+                    rest++;
+                }
                 const startItem = d.start.split(':');
                 const endItem = d.end.split(':');
                 const start = new Date(year, month, day, +startItem[0], +startItem[1], +startItem[2]);
@@ -99,7 +100,7 @@ module.exports = async(ctx, next) => {
         width: 20
     }];
     conf.rows = [].concat(details);
-    const fileName = `${chosenClass[0].name}${month}月考勤汇总`;
+    const fileName = queryMonth ? `${chosenClass[0].name}${queryMonth}月考勤汇总` : `${chosenClass[0].name}${month}月考勤汇总`;
     const result = excelPort.execute(conf);
     const filePath = `${uploadDir}\\${fileName}.xlsx`;
     fs.writeFileSync(filePath, result, 'binary');

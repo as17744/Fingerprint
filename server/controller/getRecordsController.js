@@ -4,11 +4,12 @@ const students = require('../schema/students');
 const classes = require('../schema/allClasses');
 module.exports = async(ctx, next) => {
     const id = ctx.session.id;
+    const queryMonth = ctx.query.month;
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth()+1;
     const day = date.getDate();
-    const searchM = `${year}-${month}-`;
+    const searchM = queryMonth ? `${year}-${queryMonth}-` : `${year}-${month}-`;
     const selfRecord = await records.getRecords(id, searchM);
     const recordInf = _.map(selfRecord, (item) => {
         const obj = {};
@@ -69,8 +70,8 @@ module.exports = async(ctx, next) => {
             monthArr.push('');
         }
     }
-    const abnormalRate = (abnormal / total).toFixed(2);
-    const presentRate = ((total - absence) / total).toFixed(2);
+    const abnormalRate = total ? (abnormal / total).toFixed(2) : 0;
+    const presentRate = total ? ((total - absence) / total).toFixed(2) : 0;
     ctx.body = {
         success: true,
         start: classInf[0].start,

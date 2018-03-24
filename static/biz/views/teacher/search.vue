@@ -7,6 +7,22 @@
                         <el-option v-for="item in classes" :label="item.name" :value="item.id" :key="item.name"></el-option>
                     </el-select>
                 </el-form-item>
+                <el-form-item label="月份">
+                    <el-select v-model="searchMonth" placeholder="请选择查询月份">
+                        <el-option label="1" value="1"></el-option>
+                        <el-option label="2" value="2"></el-option>
+                        <el-option label="3" value="3"></el-option>
+                        <el-option label="4" value="4"></el-option>
+                        <el-option label="5" value="5"></el-option>
+                        <el-option label="6" value="6"></el-option>
+                        <el-option label="7" value="7"></el-option>
+                        <el-option label="8" value="8"></el-option>
+                        <el-option label="9" value="9"></el-option>
+                        <el-option label="10" value="10"></el-option>
+                        <el-option label="11" value="11"></el-option>
+                        <el-option label="12" value="12"></el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="查询类型">
                     <el-select v-model="config.type" placeholder="请选择查询类型">
                         <el-option label="异常次数" value="abnormal"></el-option>
@@ -60,6 +76,7 @@
                 records: [],
                 classes: [],
                 searchClass: '',
+                searchMonth: '',
                 config: {
                     type: '',
                     num: '',
@@ -68,8 +85,9 @@
             }
         },
         methods: {
-            init(clas='', type='', num='', sign='') {
+            init(m = '', clas='', type='', num='', sign='') {
                 zstuAjax('/datas', {
+                    month: m,
                     clas,
                     type,
                     num,
@@ -88,11 +106,10 @@
                 });
             }, 
             search() {
-                console.log(this.config);
                 if (this.config.type && (!this.config.sign || !this.config.num)) {
                     this.$message.error('请输入完整查询信息');
                 } else {
-                    this.init(this.searchClass, this.config.type, this.config.num, this.config.sign);
+                    this.init(this.searchMonth, this.searchClass, this.config.type, this.config.num, this.config.sign);
                 }
             },
             clear() {
